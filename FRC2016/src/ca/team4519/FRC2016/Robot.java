@@ -51,6 +51,7 @@ public class Robot extends MechaIterativeRobot{
 		SmartDashboard.putNumber("Distance to drive", 10.0);
 		needTime = true;
 		
+		auton.addObject("Do Nothing", new DoNothing());
 		auton.addObject("", new CrossLowbar());
 		auton.addObject("", new DriveDist(1));
 		SmartDashboard.putData("Autonomous Selector", auton);
@@ -65,86 +66,7 @@ public class Robot extends MechaIterativeRobot{
 	}
 	
 	public void autonomousPeriodic(){
-	if (needTime){
-		tim = (int)(System.currentTimeMillis()); // in milliseconds
-		needTime = false;
-	}
-	temptim =  (int)(System.currentTimeMillis());
-	SmartDashboard.putNumber("tim", tim);
-	SmartDashboard.putNumber("temptim", temptim);
-	SmartDashboard.putNumber("elapsed tim", temptim-tim);
-	
-	if(SmartDashboard.getNumber("Auto Mode") == 0){
-			//Do nothing
-	}else if(SmartDashboard.getNumber("Auto Mode") == 1){
 		
-		if(temptim - tim <2500){
-			Drivebase.LeftDrive.set(1.0);
-			Drivebase.RightDrive.set(-1.0);
-		}else{
-			
-			Drivebase.LeftDrive.set(0.0);
-			Drivebase.RightDrive.set(0.0);
-		}
-	}else if(SmartDashboard.getNumber("Auto Mode") == 2){
-			
-		Shoulder.changePos(Gains.ShooterPositions.Intake);
-		 
-		if ((temptim - tim <2750) && (Shoulder.rotatPid.getValue() > 70)){
-		
-			Drivebase.LeftDrive.set(0.5);
-			Drivebase.RightDrive.set(-0.5);
-		}else{
-			Drivebase.LeftDrive.set(0.0);
-			Drivebase.RightDrive.set(0.0);
-		}
-
-		
-	}else if (SmartDashboard.getNumber("Auto Mode") == 3){
-	
-
-		Shoulder.changePos(Gains.ShooterPositions.Intake);
-		 
-		if ((temptim - tim <2750) && (Shoulder.rotatPid.getValue() > 70)){
-		
-			Drivebase.LeftDrive.set(0.5);
-			Drivebase.RightDrive.set(-0.5);
-		}else{
-			
-			Drivebase.LeftDrive.set(0.0);
-			Drivebase.RightDrive.set(0.0);
-		}
-		
-		if(step1){
-			Flywheel.shooterControl(true, false, false);
-			Timer.delay(1);
-			Flywheel.shooterControl(false, false, false);
-			step1 = false;
-			step2 = true;
-		}
-		
-		if(step2){
-			if(Drivebase.gyro.getAngle() != 180){
-				Drivebase.LeftDrive.set((180 - Drivebase.gyro.getAngle()) / 22.5);
-				Drivebase.RightDrive.set((180 - Drivebase.gyro.getAngle()) / 22.5);
-			}else if (Drivebase.gyro.getAngle() == (180 +- 3)){
-				step2 = false;
-			}
-		}
-		
-		
-	}else if(SmartDashboard.getNumber("Auto Mode") == 4){
-		if ((temptim - tim <500)){
-			
-			Drivebase.LeftDrive.set(0.5);
-			Drivebase.RightDrive.set(-0.5);
-		}else{
-			
-			Drivebase.LeftDrive.set(0.0);
-			Drivebase.RightDrive.set(0.0);
-		}
-	}
-	
 	}
 	
 	public void teleopInit() { 
