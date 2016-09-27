@@ -2,7 +2,6 @@ package ca.team4519.FRC2016;
 
 import ca.team4519.lib.MechaIterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.*;
 import ca.team4519.FRC2016.subsystems.*;
 import ca.team4519.FRC2016.auton.*;
@@ -14,16 +13,7 @@ public class Robot extends MechaIterativeRobot{
 
 	SendableChooser auton = new SendableChooser();
 	Command autoMode;
-	
-	boolean step1 = false;
-	boolean step2 = false;
-	boolean step3 = false;
-	boolean step4 = false;
-	boolean needTime = true;
-	int tim = 0;
-	int temptim = 50000;
-	double goalcount = 0;
-	
+		
 	public boolean fireBumper = false;
 	
 	Joystick gamepad = new Joystick(0);
@@ -49,7 +39,6 @@ public class Robot extends MechaIterativeRobot{
 		Drivebase.gyro.calibrate();
 		SmartDashboard.putNumber("Auto Mode", 0);
 		SmartDashboard.putNumber("Distance to drive", 10.0);
-		needTime = true;
 		
 		auton.addObject("Do Nothing", new DoNothing());
 		auton.addObject("", new CrossLowbar());
@@ -61,15 +50,17 @@ public class Robot extends MechaIterativeRobot{
 	public void autonomousInit(){
 	
 		Drivebase.resetSensors();
-		needTime = true;
+		autoMode = (Command) auton.getSelected();
+		autoMode.start();
 	
 	}
 	
 	public void autonomousPeriodic(){
-		
+		Scheduler.getInstance().run();
 	}
 	
 	public void teleopInit() { 
+		Scheduler.getInstance().removeAll();
 		Drivebase.resetSensors();
 		Shoulder.illuminatedAngles.clear();
 		
