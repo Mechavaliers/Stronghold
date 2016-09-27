@@ -17,8 +17,8 @@ public class Lifter extends Subsystem implements Loopable {
 	public boolean canLift = false;
 	public boolean canRelease = false;
 	
-	public void WinchMovement(double Lefttrig, double rightTrig){
-		RightWinch.set(Lefttrig);
+	public void WinchMovement(double LeftTrig, double rightTrig){
+		RightWinch.set(LeftTrig);
 		LeftWinch.set(rightTrig);
 	}
 	public void StartClimb(boolean raise){
@@ -41,12 +41,12 @@ public class Lifter extends Subsystem implements Loopable {
 	
 	public Lifter() {
 		super("Lifter");
-		// TODO Auto-generated constructor stub
+
 	}
 
 
 	public void update() {
-		// TODO Auto-generated method stub
+
 		
 	}
 
