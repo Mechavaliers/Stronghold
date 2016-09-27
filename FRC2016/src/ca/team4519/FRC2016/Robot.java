@@ -4,10 +4,8 @@ import ca.team4519.lib.MechaIterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.*;
-import ca.team4519.FRC2016.subsystems.Flywheel;
-import ca.team4519.FRC2016.subsystems.Lifter;
-import ca.team4519.FRC2016.subsystems.ShoulderPivot;
-import ca.team4519.FRC2016.subsystems.Drivebase;
+import ca.team4519.FRC2016.subsystems.*;
+import ca.team4519.FRC2016.auton.*;
 import ca.team4519.lib.MultiLooper;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,28 +33,28 @@ public class Robot extends MechaIterativeRobot{
 	Flywheel Flywheel = new Flywheel();
 	Lifter Lifter = new Lifter();
 	MultiLooper subsystemUpdater100hz = new MultiLooper(1.0 /100);
-	
-	
-	
-	
-	
+
 	public void robotInit() {
+		
 		Flywheel.shooterInit();
-		Drivebase.drivebaseInit();		
+		Drivebase.drivebaseInit();
+		
 		subsystemUpdater100hz.addLoopable(Drivebase);
 		subsystemUpdater100hz.addLoopable(Flywheel);
 		subsystemUpdater100hz.addLoopable(Shoulder);
 		subsystemUpdater100hz.addLoopable(Lifter);
 		subsystemUpdater100hz.addLoopable(Shoulder);
 		subsystemUpdater100hz.start();
+		
 		Drivebase.gyro.calibrate();
 		SmartDashboard.putNumber("Auto Mode", 0);
+		SmartDashboard.putNumber("Distance to drive", 10.0);
 		needTime = true;
-		SmartDashboard.putNumber("turn Target", 0);
-		SmartDashboard.putNumber("Turn P", 0);
-		SmartDashboard.putNumber("Turn I" ,0);
-		SmartDashboard.putNumber("Turn D", 0);
-	
+		
+		auton.addObject("", new CrossLowbar());
+		auton.addObject("", new DriveDist(1));
+		SmartDashboard.putData("Autonomous Selector", auton);
+
 	}
 	
 	public void autonomousInit(){
