@@ -32,7 +32,7 @@ public class CrossLowbar extends Command {
     	
 		Shoulder.changePos(Gains.ShooterPositions.Intake);
 		 
-		if ((temptim - tim <2750) && (Shoulder.rotatPid.getValue() > 70)){
+		if ((Drivebase.leftDriveEncoder.get() / Gains.DrivetrainGains.TicksPerInch)< 10){
 		
 			Drivebase.LeftDrive.set(0.5);
 			Drivebase.RightDrive.set(-0.5);
